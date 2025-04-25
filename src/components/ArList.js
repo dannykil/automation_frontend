@@ -26,12 +26,15 @@ function ArList() {
   const [arDetails, setArDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
+  console.log('BACKEND_HOST : ', BACKEND_HOST);
 
   useEffect(() => {
     setLoading(true);
     setArDetails(null);
     axios
-      .get(`http://localhost:5000/api/ar/info/select/${jobId}`)
+      // .get(`http://localhost:5000/api/ar/info/select/${jobId}`)
+      .get(`${BACKEND_HOST}/api/ar/info/select/${jobId}`)
       .then((response) => {
         console.log(`AR 상세 정보 (Job ID: ${jobId}):`, response.data);
         setArDetails(response.data);

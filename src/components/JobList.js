@@ -15,10 +15,13 @@ function JobList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate(); // useNavigate 훅 사용
+  const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
+  console.log('BACKEND_HOST : ', BACKEND_HOST);
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/ar/job/select')
+      // .get('http://localhost:5000/api/ar/job/select')
+      .get(`${BACKEND_HOST}/api/ar/job/select`)
       .then((response) => {
         setJobs(response.data);
         setLoading(false);
