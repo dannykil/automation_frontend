@@ -19,7 +19,7 @@ function App() {
       <GlobalStyle />
       <Container>
         <Routes>
-          <Route path="/" element={<JobList />} />
+          <Route path="/ar" element={<JobList />} />
           <Route path="/ar-list/:jobId" element={<ArList />} />
           <Route path="/ar/:arInfoId" element={<ArDetail />} />
         </Routes>
