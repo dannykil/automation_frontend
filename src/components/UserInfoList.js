@@ -44,8 +44,10 @@ const UserInfoList = () => {
   }
 
   return (
-    <Container>
-      <PageTitle>사용자 정보</PageTitle>
+    // <Container>
+    //   <PageTitle>사용자 정보</PageTitle>
+    <div>
+      <h2>사용자 정보</h2>
       <Table>
         <TableHead>
           <TableRow>
@@ -70,7 +72,8 @@ const UserInfoList = () => {
           ))}
         </tbody>
       </Table>
-    </Container>
+      {/* </Container> */}
+    </div>
   );
 };
 
