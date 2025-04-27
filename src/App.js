@@ -4,6 +4,8 @@ import JobList from './components/JobList';
 import ArList from './components/ArList';
 import ArDetail from './components/ArDetail';
 import { GlobalStyle, Container, Button } from './styles';
+import Header from './components/common/Header';
+import UserInfoList from './components/UserInfoList';
 
 function App() {
   // const apiUrl = process.env.REACT_APP_HOST;
@@ -17,9 +19,11 @@ function App() {
   return (
     <Router>
       <GlobalStyle />
+      <Header />
       <Container>
         <Routes>
           <Route path="/ar" element={<JobList />} />
+          <Route path="/userinfo" element={<UserInfoList />} />
           <Route path="/ar-list/:jobId" element={<ArList />} />
           <Route path="/ar/:arInfoId" element={<ArDetail />} />
         </Routes>

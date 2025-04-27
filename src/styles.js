@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import { Link } from 'react-router-dom'; // React Router 사용 시
 
 export const GlobalStyle = createGlobalStyle`
   html {
@@ -227,4 +228,68 @@ export const Label = styled.div`
 export const Value = styled.div`
   color: #555;
   word-break: break-word;
+`;
+
+export const HeaderContainer = styled.header`
+  background-color: #007bff; /* 파란색 배경 */
+  color: #ffffff; /* 흰색 글자 */
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between; /* 항목들을 양쪽 끝으로 배치 */
+  align-items: center;
+`;
+
+export const HeaderItems = styled.nav`
+  display: flex;
+  align-items: center;
+`;
+
+export const HeaderItem = styled(Link)`
+  // React Router Link 사용 (선택 사항)
+  color: #ffffff;
+  text-decoration: none; /* 기본 밑줄 제거 */
+  margin-left: 1.5rem;
+  font-size: 1rem;
+  transition: color 0.3s ease, text-decoration 0.3s ease; /* color와 text-decoration에 transition 적용 */
+
+  &:hover {
+    color: #e0f7fa; /* 호버 시 밝게 */
+    text-decoration: underline; /* 호버 시 밑줄 표시 */
+    text-decoration-color: #ffffff; /* 밑줄 색상을 흰색으로 지정 */
+  }
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 1rem;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 576px) {
+    margin-left: 0.8rem;
+    font-size: 0.8rem;
+  }
+`;
+
+export const Logo = styled(Link)`
+  // 로고 영역 (선택 사항)
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 1.1rem;
+  }
 `;
