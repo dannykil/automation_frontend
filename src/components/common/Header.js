@@ -4,7 +4,7 @@ import { HeaderContainer, HeaderItems, HeaderItem, Logo } from '../../styles'; /
 const Header = () => {
   return (
     <HeaderContainer>
-      <Logo to="/">Your App Name</Logo> {/* 로고 (선택 사항) */}
+      <Logo to="/">Your App Name111</Logo> {/* 로고 (선택 사항) */}
       <HeaderItems>
         <HeaderItem to="/log">로그</HeaderItem>
         <HeaderItem to="/ar">AR</HeaderItem>
