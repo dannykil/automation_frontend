@@ -7,6 +7,7 @@ import { GlobalStyle, Container, Button } from './styles';
 import Header from './components/common/Header';
 import UserInfoList from './components/UserInfoList';
 import LogViewer from './components/common/LogViewer';
+import SimpleUploader from './components/SimpleUploader';
 
 function App() {
   // const apiUrl = process.env.REACT_APP_HOST;
@@ -28,6 +29,7 @@ function App() {
           <Route path="/log" element={<LogViewer />} />
           <Route path="/ar-list/:jobId" element={<ArList />} />
           <Route path="/ar/:arInfoId" element={<ArDetail />} />
+          <Route path="/fileupload" element={<SimpleUploader />} />
         </Routes>
       </Container>
     </Router>

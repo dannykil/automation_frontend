@@ -9,6 +9,7 @@ const Header = () => {
         <HeaderItem to="/log">로그</HeaderItem>
         <HeaderItem to="/ar">AR</HeaderItem>
         <HeaderItem to="/userinfo">사용자</HeaderItem>
+        <HeaderItem to="/fileupload">파일업로드</HeaderItem>
       </HeaderItems>
     </HeaderContainer>
   );
