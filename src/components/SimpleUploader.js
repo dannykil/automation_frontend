@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 
 const SimpleUploader = () => {
   const [file, setFile] = useState(null);
+  const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
@@ -31,8 +32,8 @@ const SimpleUploader = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:5000/api/file/upload', {
-        //   const response = await fetch('${BACKEND_HOST}/api/file/upload', {
+      // const response = await fetch('http://localhost:5000/api/file/upload', {
+      const response = await fetch(`${BACKEND_HOST}/api/file/upload`, {
         // 백엔드 업로드 API 엔드포인트
         method: 'POST',
         body: formData,
