@@ -1,3 +1,15 @@
+// prompt:
+// 지금 이 에러메시지가 발생하고 있어 : No routes matched location "/"
+// 홈경로로 접근했을 때 보여주는 컴포넌트 만들어주고 메인 화면에는 구글 드라이브에 업로드된 동영상을 보여주고 싶은데 가능해?
+
+// prompt:
+// 홈 경로로 접근했을 때
+// 1) <HomePage />컴포넌트가 <Container>컴포넌트 밖에 있어야 하고
+// 2) 동영상 사이즈도 반응형ㅇ으로 바꿔줘
+
+// prompt:
+// 이 리액트 소스코드에서 아래의 에러메시지가 발생하고 있는데 원인 알 수 있어?
+// Refused to frame 'https://accounts.google.com/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors https://drive.google.com".
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import JobList from './components/JobList';
@@ -9,6 +21,7 @@ import UserInfoList from './components/UserInfoList';
 import LogViewer from './components/common/LogViewer';
 import SimpleUploader from './components/SimpleUploader';
 import UploadedFileList from './components/UploadedFileList';
+import styled from 'styled-components';
 
 function App() {
   // const apiUrl = process.env.REACT_APP_HOST;
@@ -19,12 +32,50 @@ function App() {
   // const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
   // console.log('process.env.REACT_APP_BACKEND_HOST : ', BACKEND_HOST);
 
+  // 반응형 iframe을 위한 styled component
+  // const ResponsiveIframe = styled.iframe`
+  //   width: 100%;
+  //   height: 0;
+  //   padding-bottom: 56.25%; /* 16:9 비율 (height = width * 9 / 16) */
+  //   position: relative;
+  //   border: 0;
+
+  //   & > div {
+  //     position: absolute;
+  //     top: 0;
+  //     left: 0;
+  //     width: 100%;
+  //     height: 100%;
+  //   }
+  // `;
+
+  // 홈 화면 컴포넌트
+  function HomePage() {
+    // const videoId = '1uy0-GOB0n1NepjzcRubfT7gk-8mQTXAr'; // 회사
+    const videoId = '1uiTL1ZDvFmt4zDZ3E2WPW20YcNg9wbfI'; // 개인
+    const videoUrl = `https://drive.google.com/file/d/${videoId}/preview`;
+
+    return (
+      <div>
+        {/* <ResponsiveIframe
+          src={videoUrl}
+          allowFullScreen
+          title="Google Drive Video"
+        /> */}
+      </div>
+    );
+  }
   return (
     <Router>
       <GlobalStyle />
       <Header />
+      {/* HomePage 컴포넌트를 Container 밖에 배치 */}
+      {/* <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes> */}
       <Container>
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/ar" element={<JobList />} />
           <Route path="/userinfo" element={<UserInfoList />} />
           <Route path="/log" element={<LogViewer />} />
