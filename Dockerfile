@@ -18,3 +18,7 @@ COPY --from=builder /app/build /usr/share/nginx/html
 COPY default.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+
+# Cloud Build로 빌드하고 있는데 아래의 에러메시지가 발생하고 있어.
+# Step 11/13 : COPY default.conf /etc/nginx/conf.d/default.conf
+# COPY failed: file not found in build context or excluded by .dockerignore: stat default.conf: file does not exist

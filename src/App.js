@@ -10,6 +10,10 @@
 // prompt:
 // 이 리액트 소스코드에서 아래의 에러메시지가 발생하고 있는데 원인 알 수 있어?
 // Refused to frame 'https://accounts.google.com/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors https://drive.google.com".
+
+// prompt:
+// 분명 Routes에 board를 등록했는데 왜 /board로 접근했을 때 404 에러가 발생하는거야?
+// 내가 배포한 곳은 Google Cloud Platform의 Cloud Run이야
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import JobList from './components/JobList';
