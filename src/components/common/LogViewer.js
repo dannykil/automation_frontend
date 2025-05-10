@@ -21,7 +21,7 @@ const LogViewer = () => {
         // const response = await fetch(`/api/log/read/${today}`);
         // const response = await fetch(`${BACKEND_HOST}/api/userinfo/select`); // 전체 사용자 정보 API 엔드포인트
         const response = await fetch(
-          `http://localhost:5000/api/log/read/20250427`
+          `http://localhost:5000/api/log/read/20250510`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
