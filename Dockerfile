@@ -8,8 +8,8 @@
 # 혹시 어디가 잘못된거야?
 FROM node:18-alpine as builder
 ENV REACT_APP_HOST=0.0.0.0
-# ENV REACT_APP_BACKEND_HOST=https://automation-dev-213242029674.us-central1.run.app
-ENV REACT_APP_BACKEND_HOST=http://localhost:5000
+ENV REACT_APP_BACKEND_HOST=https://automation-dev-213242029674.us-central1.run.app
+# ENV REACT_APP_BACKEND_HOST=http://localhost:5000
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
