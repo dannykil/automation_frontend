@@ -156,6 +156,11 @@ const BoardListWithFiles = () => {
   const startFileAnalysis = async (id, board_id, filename, filepath) => {
     setIsAnalyzing(true);
     setParsingFileByBoard((prev) => ({ ...prev, [board_id]: filename }));
+    console.log('id : ', id);
+    console.log('board_id : ', board_id);
+    console.log('filename : ', filename);
+    console.log('filepath : ', filepath);
+
     try {
       const response = await fetch(`${BACKEND_HOST}/api/parser/analysis`, {
         method: 'POST',
