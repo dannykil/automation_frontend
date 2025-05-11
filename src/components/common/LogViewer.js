@@ -17,6 +17,15 @@
 
 // prompt:
 // 마지막으로 타임스탬프 칼럼을 클릭하면 오름차순, 내림차순 정렬이 되도록 하고 싶은데 기능은 구현되어 있으나 정상적으로 동작 안하고 있어. 혹시 어느 부분에 문제가 있는지 봐줄 수 있어?
+
+// prompt:
+// '타임스탬프'클릭해서 로그 정렬하는 기능 모두 제거하고 각 row의 파일명을 클릭하면 해당 파일의 로그만 보여주는 기능으로 변경해줘.
+
+// prompt:
+// 아래는 styles.js에서 사용하는 TableHeader 컴포넌트인데 TableHeaderButton의 디자인을 TableHeader와 똑같이 맞춰줘.
+
+// prompt:
+// '타임스탬프' 데이터가 2025-05-10 14:41:41,566 이런식으로 들어오는데 이걸 2025-05-10 14:41:41까지만 보이게 해줘. 즉 밀리세컨드 부분은 보이지 않도록 해줘.
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import {
@@ -41,13 +50,23 @@ const Select = styled.select`
   border-radius: 4px;
 `;
 
-const SortButton = styled.button`
+const TableHeaderButton = styled.button`
   background: none;
   border: none;
-  padding: 0;
+  padding: 0.8rem;
   margin: 0;
   cursor: pointer;
   font-weight: bold;
+  text-align: left;
+  font-size: 1rem;
+  display: block;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    display: block;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
 `;
 
 const MessageCell = styled(TableCell)`
@@ -55,7 +74,12 @@ const MessageCell = styled(TableCell)`
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 200px;
-  cursor: pointer; /* 클릭 가능한 스타일 */
+  cursor: pointer;
+`;
+
+const FilenameCell = styled(TableCell)`
+  cursor: pointer;
+  font-weight: bold;
 `;
 
 const ModalOverlay = styled.div`
@@ -79,11 +103,11 @@ const ModalContent = styled.div`
   max-width: 80%;
   max-height: 80%;
   overflow-y: auto;
-  white-space: pre-wrap; /* 자동 줄바꿈 활성화 (ModalContent 자체) */
+  white-space: pre-wrap;
 
   pre {
-    white-space: pre-wrap; /* <pre> 태그 내부에서도 줄바꿈 적용 */
-    word-break: break-word; /* 단어 단위로 줄바꿈 (더 자연스러운 줄바꿈) */
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 `;
 
@@ -98,14 +122,14 @@ const CloseButton = styled.button`
 `;
 
 const LogViewer = () => {
+  const [allLogs, setAllLogs] = useState([]);
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedDay, setSelectedDay] = useState(new Date().getDate());
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [selectedLogMessage, setSelectedLogMessage] = useState(null); // 모달에 표시할 메시지 상태
+  const [selectedLogMessage, setSelectedLogMessage] = useState(null);
   const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST;
 
   const years = Array.from(
@@ -136,6 +160,7 @@ const LogViewer = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        setAllLogs(data.data);
         setLogs(data.data);
         setLoading(false);
       } catch (e) {
@@ -191,16 +216,14 @@ const LogViewer = () => {
     },
     [handleDateChange, selectedYear, selectedMonth]
   );
-  const handleSort = useCallback(() => {
-    const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    setSortOrder(newSortOrder);
-    const sortedLogs = [...logs].sort((a, b) => {
-      const dateA = new Date(a.timestamp);
-      const dateB = new Date(b.timestamp);
-      return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-    });
-    setLogs(sortedLogs);
-  }, [logs, sortOrder]);
+
+  const handleFilenameClick = useCallback(
+    (filename) => {
+      const filteredLogs = allLogs.filter((log) => log.filename === filename);
+      setLogs(filteredLogs);
+    },
+    [allLogs]
+  );
 
   const handleMessageClick = useCallback((message) => {
     setSelectedLogMessage(message);
@@ -208,6 +231,17 @@ const LogViewer = () => {
 
   const handleCloseModal = useCallback(() => {
     setSelectedLogMessage(null);
+  }, []);
+
+  const resetLogFilter = useCallback(() => {
+    setLogs(allLogs);
+  }, [allLogs]);
+
+  const formatTimestamp = useCallback((timestamp) => {
+    if (timestamp) {
+      return timestamp.split(',')[0];
+    }
+    return '';
   }, []);
 
   if (loading) return <div>Loading logs...</div>;
@@ -253,11 +287,13 @@ const LogViewer = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableHeader>
-                <SortButton onClick={handleSort}>타임스탬프</SortButton>
-              </TableHeader>
+              <TableHeader>타임스탬프</TableHeader>
               <TableHeader>로그 레벨</TableHeader>
-              <TableHeader>파일 이름</TableHeader>
+              <TableHeader>
+                <TableHeaderButton onClick={resetLogFilter}>
+                  파일 이름
+                </TableHeaderButton>
+              </TableHeader>
               <TableHeader>함수</TableHeader>
               <TableHeader>라인 번호</TableHeader>
               <TableHeader>메시지</TableHeader>
@@ -266,9 +302,11 @@ const LogViewer = () => {
           <tbody>
             {logs.map((log, index) => (
               <TableRow key={index}>
-                <TableCell>{log.timestamp}</TableCell>
+                <TableCell>{formatTimestamp(log.timestamp)}</TableCell>
                 <TableCell>{log.level}</TableCell>
-                <TableCell>{log.filename}</TableCell>
+                <FilenameCell onClick={() => handleFilenameClick(log.filename)}>
+                  {log.filename}
+                </FilenameCell>
                 <TableCell>{log.function}</TableCell>
                 <TableCell>{log.lineno}</TableCell>
                 <MessageCell onClick={() => handleMessageClick(log.message)}>
