@@ -248,7 +248,8 @@ const LogViewer = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <Container>
+    // <Container>
+    <div>
       <PageTitle>로그 뷰어</PageTitle>
       <DateSelectorContainer>
         <Select value={selectedYear} onChange={handleYearChange}>
@@ -321,7 +322,8 @@ const LogViewer = () => {
       ) : (
         <div>해당 날짜의 로그 데이터가 없습니다.</div>
       )}
-    </Container>
+      {/* </Container> */}
+    </div>
   );
 };
 
