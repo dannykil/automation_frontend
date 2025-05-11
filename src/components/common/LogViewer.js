@@ -26,6 +26,9 @@
 
 // prompt:
 // '타임스탬프' 데이터가 2025-05-10 14:41:41,566 이런식으로 들어오는데 이걸 2025-05-10 14:41:41까지만 보이게 해줘. 즉 밀리세컨드 부분은 보이지 않도록 해줘.
+
+// prompt:
+// 파일이름이 '_internal.py'인 경우는 리스트에서 제외하고 보여주지 않도록 해줘.
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import {
@@ -161,7 +164,8 @@ const LogViewer = () => {
         }
         const data = await response.json();
         setAllLogs(data.data);
-        setLogs(data.data);
+        // 파일 이름이 '_internal.py'인 로그는 필터링하여 초기 상태에 반영
+        setLogs(data.data.filter((log) => log.filename !== '_internal.py'));
         setLoading(false);
       } catch (e) {
         setError(e);
@@ -219,7 +223,9 @@ const LogViewer = () => {
 
   const handleFilenameClick = useCallback(
     (filename) => {
-      const filteredLogs = allLogs.filter((log) => log.filename === filename);
+      const filteredLogs = allLogs.filter(
+        (log) => log.filename === filename && log.filename !== '_internal.py'
+      );
       setLogs(filteredLogs);
     },
     [allLogs]
@@ -234,7 +240,7 @@ const LogViewer = () => {
   }, []);
 
   const resetLogFilter = useCallback(() => {
-    setLogs(allLogs);
+    setLogs(allLogs.filter((log) => log.filename !== '_internal.py'));
   }, [allLogs]);
 
   const formatTimestamp = useCallback((timestamp) => {
